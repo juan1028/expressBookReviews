@@ -25,8 +25,6 @@ app.use("/customer/auth/*", function auth(req,res,next){
     next();
   } catch (err) {
     return res.status(401).json(err);
-
-    //return res.status(401).json({accessToken:req.session.accessToken, message: "Invalid access token" });
   }
 
 });
