@@ -30,8 +30,12 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-  const booksList = JSON.stringify(books, null, 2);
-  return res.status(200).send(`List of books available: \n${booksList}`);
+    new Promise((resolve, reject) => {
+        resolve(JSON.stringify(books, null, 2));
+    })
+    .then(data => {
+        res.status(200).send(`List of books available: \n${data}`);
+    });
 });
 
 // Get book details based on ISBN
@@ -39,12 +43,16 @@ public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   let isbn = req.params.isbn;
   let booksList=Object.values(books)
+  new Promise((resolve, reject) => {
   let book = books[isbn];
   if (book) {
-    let bookDetails = JSON.stringify(book);
-    res.send(`Book details for ISBN ${isbn}: ${bookDetails}`);
-  } else {
-    res.send(`No book found for ISBN ${isbn}`);}
+    resolve(JSON.stringify(book));
+    } else {
+    reject(`No book found for ISBN ${isbn}`);}
+    })
+    .then(data => {
+        res.send(`Book details for ISBN ${isbn}: ${data}`);
+    });
  });
   
 // Get book details based on author
